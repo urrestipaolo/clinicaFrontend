@@ -1,0 +1,3 @@
+1. El codigo no daba en el esquema de pacientes o lo creaba de otra manera los pacientes
+2. el BadgeEstado se repetía por todo el codigo
+3. Habían duplicados y el contador en la busqueda no se movía, se mantenía estatico
