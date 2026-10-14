@@ -1,6 +1,6 @@
 import type { Paciente } from '../types/paciente';
 
-export const PACIENTES_EJEMPLO: Paciente[] = [
+export const listaPacientes: Paciente[] = [
   {
     id: '1',
     nombre: 'Carlos',
