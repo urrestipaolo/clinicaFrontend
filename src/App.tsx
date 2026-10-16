@@ -2,8 +2,9 @@ import { useState } from 'react';
 import { Metrica } from './types';
 import { StatusBadge } from './componentes/StatusBadge';
 import { MetricCard } from './componentes/MetricCard';
-import { PaginaPacientes } from './componentes/Pagina';
+import { PaginaPacientes } from './paginas/PaginaPacientes';
 import "./App.css";
+import { PaginaNuevaCita } from './paginas/PaginaCitas';
 
 
 export function App() {
@@ -111,6 +112,7 @@ export function App() {
 
       <div className='mt-8'>
         <PaginaPacientes />
+        <PaginaNuevaCita />
       </div>
     </div>
   );

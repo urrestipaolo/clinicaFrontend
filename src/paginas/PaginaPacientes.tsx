@@ -1,11 +1,11 @@
 import { useMemo, useState, ChangeEvent } from 'react'; 
 import { listaPacientes } from '../contenido-informacion/lista-pacientes';
-import { BuscadorPacientes } from './Buscador';
-import { PacienteCard } from './PacienteCard';
-import { PacienteRow } from './PacienteRow';
+import { BuscadorPacientes } from '../componentes/Buscador';
+import { PacienteCard } from '../componentes/PacienteCard';
+import { PacienteRow } from '../componentes/PacienteRow';
 import { EstadoPaciente, FiltroEstado, Paciente } from '../types/paciente';
 import { estadoPacientex, filtroEstadox, estadoPaciente, etiquetaPacientex } from '../contenido-informacion/estadoPaciente';
-import { FormularioPaciente } from './Formulario';
+import { FormularioPaciente } from '../componentes/FormularioPacientes';
 
 const tablaColumnas: string[] = [
   'Paciente',
