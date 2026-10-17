@@ -54,7 +54,11 @@ function Campo({ id, etiqueta, error, children }: CampoProps) {
   );
 }
 
-export function FormularioCita() {
+interface FormularioCitaProps {
+  onCancelar: () => void;
+}
+
+export function FormularioCita({ onCancelar }: FormularioCitaProps) {
   const { medicos, cargando } = useMedicos();
   const [citaConfirmada, setCitaConfirmada] = useState<CitaFormData | null>(null);
 
@@ -231,7 +235,15 @@ export function FormularioCita() {
         />
       </Campo>
 
-      <div className="flex justify-end">
+      <div className="flex justify-end gap-3">
+        <button
+          type="button"
+          onClick={onCancelar}
+          disabled={isSubmitting}
+          className="rounded-lg border border-slate-200 px-5 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-60"
+        >
+          Cancelar
+        </button>
         <button
           type="submit"
           disabled={isSubmitting}

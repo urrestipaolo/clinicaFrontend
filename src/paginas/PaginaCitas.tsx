@@ -1,6 +1,9 @@
 import { FormularioCita } from '../componentes/FormularioCitas';
+import { useNavigate } from 'react-router-dom';
 
 export function PaginaNuevaCita() {
+    const navigate = useNavigate();
+
   return (
     <div className="flex flex-col gap-6 text-left">
       <header className="flex flex-col gap-1">
@@ -12,7 +15,7 @@ export function PaginaNuevaCita() {
         </p>
       </header>
 
-      <FormularioCita />
+      <FormularioCita onCancelar={() => navigate(-1)}/>
     </div>
   );
 }
