@@ -1,110 +1,120 @@
 import { useState } from 'react';
-import { Metrica } from '../types';
-import { StatusBadge } from '../componentes/StatusBadge';
+import { useNavigate } from 'react-router-dom';
+import { useLista } from '../hooks/UseLista';
+import type { Metrica } from '../types';
+import {
+  ESTADO_CITA_COMPLETADA,
+  ESTADO_CITA_PENDIENTE,
+  type Cita,
+  type Medico,
+  type Paciente,
+} from '../types/clinica';
 import { MetricCard } from '../componentes/MetricCard';
+import { StatusBadge } from '../componentes/StatusBadge';
+
+interface ResultadoMetrica {
+  total: number;
+  cargando: boolean;
+  error: boolean;
+}
+
+const valorMetrica = ({
+  total,
+  cargando,
+  error,
+}: ResultadoMetrica): number | string => {
+  if (cargando) return '—';
+  if (error) return 'Error';
+  return total;
+};
 
 export function PaginaDashboard() {
-
+  const navigate = useNavigate();
   const [mantenimiento, setMantenimiento] = useState(false);
 
-
-  const [pacientes, setPacientes] = useState(3);
-
-  const incrementarPacientes = () => setPacientes((prev) => prev + 1);
-  const decrementarPacientes = () => setPacientes((prev) => Math.max(0, prev - 1));
-
+  const pacientes = useLista<Paciente>('/pacientes');
+  const medicos = useLista<Medico>('/medicos');
+  const programadas = useLista<Cita>('/citas', ESTADO_CITA_PENDIENTE);
+  const completadas = useLista<Cita>('/citas', ESTADO_CITA_COMPLETADA);
 
   const metricas: Metrica[] = [
     {
-      id: "1",
-      titulo: "PACIENTES",
-      valor: pacientes,
-      descripcion: "Pacientes que hay registrados",
-      tendencia: "positiva",
-      icono: "💉",
+      id: '1',
+      titulo: 'PACIENTES',
+      valor: valorMetrica(pacientes),
+      descripcion: 'Pacientes registrados',
+      tendencia: 'positiva',
+      icono: '💉',
     },
     {
-      id: "2",
-      titulo: "CITAS",
-      valor: 42,
-      descripcion: "8 citas canceladas",
-      tendencia: "negativa",
-      icono: "📅",
+      id: '2',
+      titulo: 'MÉDICOS',
+      valor: valorMetrica(medicos),
+      descripcion: 'Médicos de la clínica',
+      tendencia: 'neutra',
+      icono: '🧑‍⚕️',
     },
     {
-      id: "3",
-      titulo: "CONSULTAS",
-      valor: 15,
-      descripcion: "Dentro del rango normal",
-      tendencia: "neutra",
-      icono: "📓",
+      id: '3',
+      titulo: 'CITAS PROGRAMADAS',
+      valor: valorMetrica(programadas),
+      descripcion: 'Citas pendientes de atención',
+      tendencia: 'positiva',
+      icono: '📅',
     },
     {
-      id: "4",
-      titulo: "DISPONIBLIDAD",
-      valor: 25,
-      descripcion: "Disponibilidad medica para atención",
-      tendencia: "positiva",
-      icono: "🧑‍⚕️",
+      id: '4',
+      titulo: 'COMPLETADAS',
+      valor: valorMetrica(completadas),
+      descripcion: 'Citas ya atendidas',
+      tendencia: 'neutra',
+      icono: '✅',
     },
   ];
 
   return (
-    <div className="min-h-screen bg-slate-50 p-8 font-sans">
+    <div className="flex flex-col gap-6 text-left">
       {mantenimiento && (
-        <div className="bg-red-600 text-white p-6">
+        <div role="alert" className="rounded-lg bg-red-600 p-4 text-white">
           EN MODO DE MANTENIMIENTO 🛠️
         </div>
       )}
 
-
-      <header className="p-4 border rounded-lg bg-amber-100">
+      <header className="flex flex-col gap-4 rounded-xl border border-slate-200 bg-white p-5 shadow-sm sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="p-4 border rounded-lg bg-amber-100 ">
-            <p className='text-gray-950'>
-              Clínica Salud Integral
-            </p>
-            </h1>
-          <h2 className="p-4 border rounded-lg bg-amber-100">Dashboard Principal</h2>
+          <h1 className="text-2xl font-bold text-slate-800">
+            Clínica Salud Integral
+          </h1>
+          <h2 className="text-sm text-slate-500">Dashboard Principal</h2>
         </div>
 
-        <div className="flex items-center gap-4">
+        <div className="flex flex-wrap items-center gap-3">
           <StatusBadge activo={!mantenimiento} />
-          
           <button
-            onClick={() => setMantenimiento(!mantenimiento)}
-            className="p-5 border rounded-lg bg-amber-500"
+            type="button"
+            onClick={() => setMantenimiento((prev) => !prev)}
+            className="rounded-lg border border-amber-300 bg-amber-100 px-4 py-2 text-sm font-semibold text-amber-900 transition-colors hover:bg-amber-200"
           >
-            MANTENIMIENTO
+            Mantenimiento
+          </button>
+          <button
+            type="button"
+            onClick={() => navigate('/pacientes')}
+            className="rounded-lg bg-emerald-700 px-4 py-2 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-emerald-800"
+          >
+            Ver Pacientes
           </button>
         </div>
       </header>
 
-
-      <section className="text 2x1 p-4 border rounded-lg bg-amber-100">
-        <p className="p-4 border rounded-lg bg-amber-100">Controles de Pacientes:</p>
-        <div className="p-4 border rounded-lg bg-amber-100">
-          <button
-            onClick={decrementarPacientes}
-            className="p-4 border rounded-lg bg-amber-100"
-          >
-            ➖
-          </button>
-          <button
-            onClick={incrementarPacientes}
-            className="p-4 border rounded-lg bg-amber-100"
-          >
-            ➕
-          </button>
-        </div>
-      </section>
-
-
-      <h5 className="text 5x1 p-4 border rounded-lg bg-amber-100">
+      <section
+        aria-label="Métricas"
+        className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4"
+      >
         {metricas.map((metrica) => (
           <MetricCard key={metrica.id} metrica={metrica} />
         ))}
-      </h5>
-</div>
+      </section>
+    </div>
   );
 }

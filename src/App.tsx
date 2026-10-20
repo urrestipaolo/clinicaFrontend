@@ -6,6 +6,7 @@ import { Layout } from './layouts/layout';
 import { PaginaDashboard } from './paginas/PaginaDashboard';
 import { PaginaDetallePaciente } from './paginas/PaginaDetallePacientes';
 import { Pagina404 } from './paginas/Pagina404';
+import PaginaPacientesDos from './paginas/PaginaPacientesDos';
 
 
 function App() {
